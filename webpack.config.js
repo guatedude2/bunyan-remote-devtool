@@ -4,7 +4,10 @@ var CopyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports = {
   devtool: 'eval',
-  entry: [ './src/index.js', './src/style/index.less'],
+  entry: [
+    './src/index.js',
+    './src/style/index.less'
+  ],
   output: {
     path: path.resolve(__dirname, 'build'),
     filename: 'js/devtool.js',
@@ -14,8 +17,15 @@ module.exports = {
     loaders: [
       {
         test: /\.js$/,
-        loaders: [ 'babel' ],
-        exclude: /node_modules/
+        loader: 'babel',
+        exclude: /node_modules/,
+        query: {
+          presets: ['es2015', 'react', 'stage-0', 'react-hmre']
+        }
+      },
+      {
+        test: /\.png$/,
+        loader: 'file-loader?name=images/[name].[ext]'
       },
       {
         test: /\.hbs$/,
@@ -23,13 +33,14 @@ module.exports = {
       },
       {
         test: /\.less$/,
-        loader: 'style!css?-url!less'
+        loader: 'style!css!less'
       }
     ]
   },
   plugins: [
     new webpack.optimize.OccurenceOrderPlugin(),
     new webpack.NoErrorsPlugin(),
+    new webpack.HotModuleReplacementPlugin(),
     new CopyWebpackPlugin([
       { from: 'src/assets/manifest.dev.json', 'to': 'manifest.json' },
       { from: 'src/assets/index.html', 'to': 'index.html' },
@@ -39,6 +50,9 @@ module.exports = {
     ])
   ],
   devServer: {
-    headers: { 'Access-Control-Allow-Origin': '*' }
+    headers: { 'Access-Control-Allow-Origin': '*' },
+    noInfo: true,
+    hot: true,
+    contentBase: path.resolve(__dirname, './build')
   }
 };

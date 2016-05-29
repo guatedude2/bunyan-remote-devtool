@@ -1,9 +1,15 @@
 import React from 'react';
+import Toolbar from '../components/Toolbar';
+import AuthPanel from '../components/AuthPanel';
 
-export class App extends React.Component {
+export default class App extends React.Component {
   render() {
     return (
-      <div>Hello World</div>
+      <section className="app">
+        <Toolbar />
+        <AuthPanel />
+        Hello World
+      </section>
     );
   }
 }

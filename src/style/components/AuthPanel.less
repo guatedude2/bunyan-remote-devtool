@@ -1,0 +1,26 @@
+.auth-panel {
+  width: auto;
+  height: auto;
+  display: block;
+  overflow: visible;
+  right: 10px;
+  top: 40px;
+  position: absolute;
+
+  &:after {
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-bottom: 10px solid hsl(0, 0%, 95%);;
+    content: " ";
+    top: -10px;
+    right: 40px;
+    position: absolute;
+  }
+
+  .instrutions, .group, .field {
+    margin-bottom: 6px;
+  }
+  .buttons {
+    margin-bottom: 4px;
+  }
+}

@@ -2,7 +2,7 @@ var path = require('path');
 var webpack = require('webpack');
 var CopyWebpackPlugin = require('copy-webpack-plugin');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
-var extractCSS = new ExtractTextPlugin('css/app.min.css');
+var extractCSS = new ExtractTextPlugin('css/devtool.css');
 
 
 module.exports = {
@@ -16,7 +16,7 @@ module.exports = {
     loaders: [
       {
         test: /\.js$/,
-        loaders: [ 'babel' ],
+        loader: 'babel',
         exclude: /node_modules/
       },
       {
@@ -25,7 +25,7 @@ module.exports = {
       },
       {
         test: /\.less$/,
-        loader: 'style!css?-url!less'
+        loader: 'style!css!less'
       }
     ]
   },
