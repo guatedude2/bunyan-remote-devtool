@@ -1,93 +1,51 @@
 header.toolbar {
-  background-color: rgb(243, 243, 243);
-  border-bottom: 1px solid rgb(218, 218, 218);
-  padding: 4px 0;
-  color: rgb(48, 57, 66);
+  cursor: default;
+  height: 26px;
   display: flex;
   align-items: center;
   -webkit-user-select: none;
-  flex: none;
-  flex-wrap: wrap;
-  position: relative;
+  border-bottom: 1px solid #dadada;
 
-  .filter {
+  .logo {
+    background: url(../../assets/images/icon32.png) 2px center no-repeat;
+    background-size: 20px;
+    padding: 0 6px 0 28px;
+    font-weight: 800;
+    height: 26px;
     display: flex;
-    margin-left: 1px;
-    margin-right: 2px;
-    min-width: 40px;
-    max-width: 150px;
-    font-size: inherit;
-    font-family: inherit;
     align-items: center;
-    margin-right: 4px;
   }
 
-  .filter-bitset {
-    list-style: none;
-    cursor: default;
-    padding: 2px;
-    display: inline-flex;
-    position: relative;
-    flex: 1 0;
-    margin: 0;
-
-    li {
-      display: inline-block;
-      flex: none;
-      margin: auto 2px;
-      padding: 3px 6px 3px 3px;
-      background: transparent;
-      text-shadow: rgba(255, 255, 255, 0.5) 0 1px 0;
-      border-radius: 8px;
-      overflow: hidden;
-
-      &:hover {
-        color: white;
-        background: rgba(0, 0, 0, 0.2);
-        text-shadow: rgba(0, 0, 0, 0.4) 0 1px 0;
-      }
-
-      &.selected {
-        color: white;
-        background: rgba(0, 0, 0, 0.3);
-        text-shadow: rgba(0, 0, 0, 0.4) 0 1px 0;
-      }
-    }
-
-    .divider {
-      background-color: #ccc;
-      height: 16px;
-      width: 1px;
-      margin: auto 2px;
-      display: inline-block;
-    }
+  .divider {
+    background-color: #ccc;
+    width: 1px;
+    margin: 5px 4px;
+    height: 16px;
   }
 
-  .actions {
-    cursor: default;
-    padding: 0 2px;
-    display: inline-flex;
-    position: relative;
+  .textbox-label {
+    margin: 0 5px;
+  }
 
-    .status {
-      display: inline-block;
-      flex: none;
-      margin: auto 2px;
-      padding: 3px 6px 3px 3px;
-      background: transparent;
-      text-shadow: rgba(255, 255, 255, 0.5) 0 1px 0;
-      border-radius: 8px;
-      overflow: hidden;
-      font-weight: bold;
-      line-height: 13px;
+  .textbox {
+    height: 20px;
+    width: 50px;
+  }
 
+  .status {
+    flex: 1 1 auto;
+    text-align: right;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    padding-right: 4px;
+    color: #333;
 
-      &.not-found {
-        opacity: 0.5;
-      }
-      &.error {
-        color: #F00;
-      }
+    &.not-found {
+      opacity: 0.5;
+    }
+    &.error {
+      color: #F00;
     }
   }
 }

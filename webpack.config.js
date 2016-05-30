@@ -25,11 +25,11 @@ module.exports = {
       },
       {
         test: /\.png$/,
-        loader: 'file-loader?name=images/[name].[ext]'
+        loader: 'file?name=images/[name].[ext]'
       },
       {
         test: /\.hbs$/,
-        loader: 'handlebars-loader'
+        loader: 'handlebars'
       },
       {
         test: /\.less$/,

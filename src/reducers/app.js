@@ -1,12 +1,26 @@
 import { handleActions } from 'redux-actions';
 
 export default handleActions({
-  READY: (state) => (
+  APP_SET_FILTER_BIT: (state, {payload}) => (
     {
       ...state,
-      isReady: true
+      filterBits: (payload.modifier ? state.filterBits ^ payload.filterBit : payload.filterBit)
+    }
+  ),
+  APP_SET_FILTER_TEST: (state, {payload}) => (
+    {
+      ...state,
+      filterText: payload.filterText
+    }
+  ),
+  APP_TOGGLE_FILTERS: (state) => (
+    {
+      ...state,
+      filtersVisible: !state.filtersVisible
     }
   )
 }, {
-  isReady: false
+  filtersVisible: false,
+  filterBits: 1,
+  filterText: ''
 });

@@ -1,24 +1,40 @@
 import React from 'react';
+import classnames from 'classnames';
 
-export default class Toolbar extends React.Component {
+export default class ToolBar extends React.Component {
+  static propTypes = {
+    onFiltersClick: React.PropTypes.func,
+    filtersVisible: React.PropTypes.bool
+  };
+  handleFiltersClick(e) {
+    this.props.onFiltersClick(e);
+  }
   render() {
-    var filterItems = [ 'All', null,'Errors','Warnings','Info','Debug', 'Trace' ];
+    const {filtersVisible} = this.props;
     return (
       <header className="toolbar">
-        <div className="filter">
-          <input type="text" />
+        <div className="logo">
+          <span>Bunyan Logger</span>
         </div>
-        <ul className="filter-bitset">
-          {filterItems.map((item, index) => (
-            item ?
-              <li key={index} title="&#8984; Click to select multiple types">{item}</li>
-            :
-              <div key={index} className="divider" />
-          ))}
-        </ul>
-        <div className="actions">
-          <span className="status">Server not found</span>
-          <button className="icon-button icon-connect" disabled></button>
+        <div className="divider" />
+        <button className="icon-button icon-connect" title="Connect to server" disabled />
+        <label className="toolbar-item">
+          <span className="textbox-label">Port:</span>
+          <input className="textbox" type="text" placeholder="3232" />
+        </label>
+        <div className="divider" />
+        <button className="icon-button icon-clear" title="Clear history" />
+        <button
+          className={classnames('icon-button', 'icon-filter', {active: filtersVisible})}
+          title="Filter"
+          onClick={this.handleFiltersClick.bind(this)}
+        />
+        <label className="toolbar-item checkbox" title="Do not remove history when connecting to bunyan server">
+          <input className="checkbox-button" type="checkbox" />
+          <span className="checkbox-text">Preserve history</span>
+        </label>
+        <div className="status not-found">
+          Server not detected
         </div>
       </header>
     );

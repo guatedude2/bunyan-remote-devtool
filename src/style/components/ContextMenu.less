@@ -1,0 +1,25 @@
+div.context-menu {
+  cursor: default;
+  width: auto;
+  height: auto;
+  overflow: visible;
+  position: absolute;
+  padding: 5px 0;
+
+  .menu-list {
+    padding: 0;
+    list-style: none;
+    line-height: 20px;
+    font-size: 12px;
+    margin: 0;
+
+    .item {
+      padding: 0 8px 0 16px;
+
+      &:not(:disabled):hover {
+        color: white;
+        background-image: linear-gradient(to right, hsl(214, 81%, 60%), hsl(214, 100%, 56%));
+      }
+    }
+  }
+}
