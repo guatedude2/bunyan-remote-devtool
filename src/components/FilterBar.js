@@ -45,7 +45,7 @@ export default class FilterBar extends React.Component {
     const {filterBits, visible} = this.props;
 
     return (
-      <header className={classnames('filterbar', { shown: visible })}>
+      <nav className={classnames('filterbar', { shown: visible })}>
         <div className="filter">
           <input
             type="text"
@@ -69,7 +69,7 @@ export default class FilterBar extends React.Component {
             return <li key={index} className="divider" />;
           })}
         </ul>
-      </header>
+      </nav>
     );
   }
 }

@@ -1,6 +1,7 @@
 var path = require('path');
 var webpack = require('webpack');
 var CopyWebpackPlugin = require('copy-webpack-plugin');
+var packageJson = require('./package.json');
 
 module.exports = {
   devtool: 'eval',
@@ -18,10 +19,7 @@ module.exports = {
       {
         test: /\.js$/,
         loader: 'babel',
-        exclude: /node_modules/,
-        query: {
-          presets: ['es2015', 'react', 'stage-0', 'react-hmre']
-        }
+        exclude: /node_modules/
       },
       {
         test: /\.png$/,
@@ -38,6 +36,11 @@ module.exports = {
     ]
   },
   plugins: [
+    new webpack.DefinePlugin({
+      'APP_VERSION': JSON.stringify(packageJson.version),
+      'COMPAT_MIN_VERSION': JSON.stringify(packageJson.compatibility.min),
+      'COMPAT_MAX_VERSION': JSON.stringify(packageJson.compatibility.max)
+    }),
     new webpack.optimize.OccurenceOrderPlugin(),
     new webpack.NoErrorsPlugin(),
     new webpack.HotModuleReplacementPlugin(),

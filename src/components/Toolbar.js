@@ -1,3 +1,4 @@
+/* global APP_VERSION */
 import React from 'react';
 import classnames from 'classnames';
 
@@ -12,8 +13,8 @@ export default class ToolBar extends React.Component {
   render() {
     const {filtersVisible} = this.props;
     return (
-      <header className="toolbar">
-        <div className="logo">
+      <nav className="toolbar">
+        <div className="logo" title={`Version: ${APP_VERSION}`}>
           <span>Bunyan Logger</span>
         </div>
         <div className="divider" />
@@ -36,7 +37,7 @@ export default class ToolBar extends React.Component {
         <div className="status not-found">
           Server not detected
         </div>
-      </header>
+      </nav>
     );
   }
 }
