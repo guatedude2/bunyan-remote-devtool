@@ -4,7 +4,7 @@
   "description": "[DEBUG MODE] Remote logger developer tool for Node.js bunyan with bunyan-remote-stream.",
   "devtools_page": "index.html",
   "manifest_version": 2,
-  "content_security_policy": "default-src 'self'; script-src 'self' http://localhost:8080 'unsafe-eval'; connect-src http://localhost:8080 ws://localhost:8080; style-src * 'unsafe-inline' 'self' blob:; img-src 'self' data: http://localhost:8080;",
+  "content_security_policy": "default-src 'self'; script-src 'self' http://localhost:8080 http://localhost:3232 'unsafe-eval'; connect-src *; style-src * 'unsafe-inline' 'self' blob:; img-src 'self' data: *;",
   "permissions": [ "tabs", "storage" ],
   "web_accessible_resources": [
     "*"

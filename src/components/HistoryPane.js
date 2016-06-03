@@ -1,41 +1,27 @@
-import _ from 'lodash';
 import React from 'react';
-import bunyanFormatter from '../utils/bunyan-formatter';
-import ObjectInspector from './ObjectInspector';
+import Record from './Record';
 
 export default class HistoryPane extends React.Component {
   static propTypes = {
     children: React.PropTypes.any,
-    history: React.PropTypes.array
+    history: React.PropTypes.array,
+    onTagClick: React.PropTypes.func
   };
 
-  formatRecord(format, record) {
-    const {log, object, error, tags} = bunyanFormatter(format, record);
-    let inspectObject;
-
-    if (error) {
-      inspectObject = <pre className="error">{error}</pre>;
-    } else if (object) {
-      inspectObject = <ObjectInspector inspect={object} />;
-    }
-
-    return <div className="record">
-      <div dangerouslySetInnerHTML={{__html: log }} />
-      {inspectObject}
-      <div className="tags">
-        {tags ? _.map(tags, (value, key) => (
-          <span key={key}>{key}: {value}</span>
-        )) : null}
-      </div>
-    </div>;
-  }
+  //TODO: scroll to latest
+  //TODO: hide/show old history when scrolling
 
   render() {
-    const {history} = this.props;
+    const {history, onTagClick} = this.props;
     return (
       <article className="history-pane">
-        {history.map((record) => (
-          <div>{this.formatRecord('[%time%] %level%: %name%/%pid% on %hostname%: %msg%', record)}</div>
+        {history.map((record, index) => (
+          <Record
+            key={index}
+            format="[%time:lll%] %level%: %name%/%pid% on %hostname%: %msg%"
+            record={record}
+            onTagClick={onTagClick}
+          />
         ))}
       </article>
     );

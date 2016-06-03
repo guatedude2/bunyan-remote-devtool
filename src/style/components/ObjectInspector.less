@@ -1,0 +1,61 @@
+.object-inspector {
+  position: relative;
+  margin-left: 14px;
+  margin-top: 4px;
+
+  .object-inspector {
+    margin-left: 12px;
+    margin-top: 2px;
+  }
+
+  .object-property {
+    padding-top: 2px;
+  }
+
+  .arrow {
+    border-top: 4px solid transparent;
+    border-bottom: 4px solid transparent;
+    border-left: 7px solid #666;
+    width: 0;
+    height: 0;
+    position: absolute;
+    left: -11px;
+    top: 1px;
+
+    &.expanded {
+      border-top: 7px solid #666;
+      border-right: 4px solid transparent;
+      border-bottom: none;
+      border-left: 4px solid transparent;
+      left: -12px;
+      top: 2px;
+    }
+  }
+  .js-object-preview {
+    font-style: italic;
+  }
+
+  .js-object-name {
+    color: rgb(136, 19, 145);
+
+    &.non-numberable {
+      opacity: 0.6,
+    }
+  }
+  .js-value-number { color: rgb(28, 0, 207); }
+  .js-value-string { color: rgb(196, 26, 22); }
+  .js-value-boolean { color: rgb(28, 0, 207); }
+  .js-value-undefined { color: rgb(128, 128, 128); }
+  .js-value-null { color: rgb(128, 128, 128); }
+  .js-value-regexp { color: rgb(196, 26, 22); }
+  .js-value-symbol { color: rgb(196, 26, 22); }
+
+  .js-value-function-keyword {
+    color: rgb(170, 13, 145);
+    font-style: italic;
+  }
+
+  .js-value-function-name {
+    font-style: italic;
+  }
+}

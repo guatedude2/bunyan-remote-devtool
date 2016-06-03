@@ -1,0 +1,79 @@
+div.record {
+  padding: 4px 28px 3px;
+  border-bottom: 1px solid #EEE;
+
+  &.error {
+    border-top: 1px solid hsl(0, 100%, 92%);
+    border-bottom: 1px solid hsl(0, 100%, 92%);
+    margin-top: -1px;
+    background-color: hsl(0, 100%, 97%);
+
+    .details .text {
+      position: relative;
+      color: red;
+    }
+  }
+
+  &.expanded {
+    .text:before {
+      content: ' ';
+      border-top: 6px solid #666;
+      border-left: 4px solid transparent;
+      border-right: 4px solid transparent;
+      width: 0;
+      height: 0;
+      position: absolute;
+      left: -10px;
+      top: 3px;
+    }
+  }
+
+  &:not(.expanded) {
+    .expandable {
+      display: none;
+    }
+
+    .text:before {
+      content: ' ';
+      border-top: 4px solid transparent;
+      border-left: 6px solid #666;
+      border-bottom: 4px solid transparent;
+      width: 0;
+      height: 0;
+      position: absolute;
+      left: -8px;
+      top: 2px;
+    }
+  }
+
+  .details {
+    display: flex;
+
+    .text {
+      flex: 1 1 auto;
+    }
+
+    .tags {
+      float: right;
+      max-width: auto;
+      text-align: right;
+      word-spacing: -4px;
+
+      a {
+        text-decoration: underline;
+        color: rgb(33%, 33%, 33%);
+        display: inline-block;
+
+        &:hover {
+          color: rgb(15%, 15%, 15%);
+        }
+      }
+    }
+  }
+
+  .expandable {
+    margin: 0;
+    padding-left: 25px;
+    line-height: 16px;
+  }
+}

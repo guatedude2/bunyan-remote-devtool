@@ -18,6 +18,15 @@ class App extends React.Component {
     history: React.PropTypes.array,
   };
 
+  handleTagClick(tag) {
+    const { dispatch, filtersVisible } = this.props;
+
+    if (!filtersVisible) {
+      dispatch(toggleFilters());
+    }
+    console.log('TAG CLICK', tag);
+  }
+
   render() {
     const {
       dispatch,
@@ -39,11 +48,10 @@ class App extends React.Component {
             filterBits={filterBits}
             onFilterTextChange={(filterText) => { dispatch(setFilterText(filterText)); }}
             onFilterBitChange={(filterBit, modifier) => { dispatch(setFilterBit(filterBit, modifier));
-
             }}
           />
         </header>
-        <HistoryPane history={history} />
+        <HistoryPane history={history} onTagClick={this.handleTagClick.bind(this)}/>
         <AuthPanel type="user" visible={false} />
         <ContextMenu className="options-menu" visible={false} />
       </section>
