@@ -15,6 +15,7 @@ const FILTERS = [
 export default class FilterBar extends React.Component {
   static propTypes = {
     filterBits: React.PropTypes.number,
+    filterText: React.PropTypes.string,
     visible: React.PropTypes.bool,
     onFilterBitChange: React.PropTypes.func.isRequired,
     onFilterTextChange:  React.PropTypes.func.isRequired
@@ -25,6 +26,12 @@ export default class FilterBar extends React.Component {
     this.state = {
       filterText: ''
     };
+  }
+
+  componentWillReceiveProps(props) {
+    this.setState({
+      filterText: props.filterText
+    });
   }
 
   handleFilterTextChange(e) {

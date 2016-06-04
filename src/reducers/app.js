@@ -7,7 +7,7 @@ export default handleActions({
       filterBits: (payload.modifier ? state.filterBits ^ payload.filterBit : payload.filterBit)
     }
   ),
-  APP_SET_FILTER_TEST: (state, {payload}) => (
+  APP_SET_FILTER_TEXT: (state, {payload}) => (
     {
       ...state,
       filterText: payload.filterText

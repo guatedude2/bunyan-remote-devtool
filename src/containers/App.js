@@ -1,7 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
-import {toggleFilters, setFilterText, setFilterBit} from '../actions/app';
+import { toggleFilters, setFilterText, setFilterBit } from '../actions/app';
+import { clearHistory } from '../actions/client';
 
 import ToolBar from '../components/ToolBar';
 import FilterBar from '../components/FilterBar';
@@ -14,6 +15,7 @@ class App extends React.Component {
     dispatch: React.PropTypes.func,
     filtersVisible: React.PropTypes.bool,
     filterBits: React.PropTypes.number,
+    filterText: React.PropTypes.string,
     clientStatus: React.PropTypes.string,
     history: React.PropTypes.array,
   };
@@ -24,7 +26,7 @@ class App extends React.Component {
     if (!filtersVisible) {
       dispatch(toggleFilters());
     }
-    console.log('TAG CLICK', tag);
+    dispatch(setFilterText(tag));
   }
 
   render() {
@@ -32,6 +34,7 @@ class App extends React.Component {
       dispatch,
       filtersVisible,
       filterBits,
+      filterText,
       clientStatus,
       history
     } = this.props;
@@ -42,10 +45,12 @@ class App extends React.Component {
           <ToolBar
             filtersVisible={filtersVisible}
             onFiltersClick={() => { dispatch(toggleFilters()); }}
+            onClearHistoryClick={() => { dispatch(clearHistory()); }}
           />
           <FilterBar
             visible={filtersVisible}
             filterBits={filterBits}
+            filterText={filterText}
             onFilterTextChange={(filterText) => { dispatch(setFilterText(filterText)); }}
             onFilterBitChange={(filterBit, modifier) => { dispatch(setFilterBit(filterBit, modifier));
             }}
@@ -63,6 +68,7 @@ class App extends React.Component {
 const mapStateToProps = (state) => ({
   filtersVisible: state.app.filtersVisible,
   filterBits: state.app.filterBits,
+  filterText: state.app.filterText,
   clientStatus: state.client.status,
   history: state.client.history,
 });

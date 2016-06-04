@@ -15,6 +15,12 @@ export default handleActions({
       ...state,
       history: state.history.concat([payload.event])
     }
+  ),
+  CLIENT_CLEAR_HISTORY: (state) => (
+    {
+      ...state,
+      history: []
+    }
   )
 }, {
   status: DISCONNECTED,

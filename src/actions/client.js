@@ -13,3 +13,5 @@ export const setClientStatus = createAction('CLIENT_SET_STATUS', (status) => (
 export const addLogEvent = createAction('CLIENT_ADD_LOG_EVENT', (event) => (
   {event}
 ));
+
+export const clearHistory = createAction('CLIENT_CLEAR_HISTORY');

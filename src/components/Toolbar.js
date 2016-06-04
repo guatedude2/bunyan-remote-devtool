@@ -5,13 +5,21 @@ import classnames from 'classnames';
 export default class ToolBar extends React.Component {
   static propTypes = {
     onFiltersClick: React.PropTypes.func,
+    onClearHistoryClick: React.PropTypes.func,
     filtersVisible: React.PropTypes.bool
   };
+
   handleFiltersClick(e) {
     this.props.onFiltersClick(e);
   }
+
+  handleClearHistoryClick(e) {
+    this.props.onClearHistoryClick(e);
+  }
+
   render() {
     const {filtersVisible} = this.props;
+
     return (
       <nav className="toolbar">
         <div className="logo" title={`Version: ${APP_VERSION}`}>
@@ -24,7 +32,11 @@ export default class ToolBar extends React.Component {
           <input className="textbox" type="text" placeholder="3232" />
         </label>
         <div className="divider" />
-        <button className="icon-button icon-clear" title="Clear history" />
+        <button
+          className="icon-button icon-clear"
+          title="Clear history"
+          onClick={this.handleClearHistoryClick.bind(this)}
+        />
         <button
           className={classnames('icon-button', 'icon-filter', {active: filtersVisible})}
           title="Filter"
