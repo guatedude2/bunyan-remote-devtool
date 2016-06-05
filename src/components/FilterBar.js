@@ -1,15 +1,15 @@
-import _ from 'lodash';
 import React from 'react';
 import classnames from 'classnames';
 
 const FILTERS = [
   { name: 'All', bit: 1 },
   null,
-  { name: 'Errors', bit: 2 },
-  { name: 'Warnings', bit: 4 },
-  { name: 'Info', bit: 8 },
-  { name: 'Debug', bit: 16 },
-  { name: 'Trace', bit: 32 }
+  { name: 'Fatal', bit: 2 },
+  { name: 'Errors', bit: 4 },
+  { name: 'Warnings', bit: 8 },
+  { name: 'Info', bit: 16 },
+  { name: 'Debug', bit: 32 },
+  { name: 'Trace', bit: 64 }
  ];
 
 export default class FilterBar extends React.Component {
@@ -39,8 +39,8 @@ export default class FilterBar extends React.Component {
     this.setState({filterText: value});
     clearTimeout(this._debouncer);
     this._debouncer = setTimeout(() => {
-      this.props.onFilterTextChange(value);
-    }, 250);
+      this.props.onFilterTextChange(this.state.filterText);
+    }, 100);
   }
 
   handleFilterClick(bit, e) {
@@ -65,15 +65,17 @@ export default class FilterBar extends React.Component {
         <ul className="filter-bitset">
           {FILTERS.map((item, index) => {
             if (item) {
-              return <li key={index}
+              return (
+                <li key={index}
                   className={classnames('item', { selected: (item.bit & filterBits) === item.bit  })}
                   title="&#8984; Click to select multiple types"
                   onClick={this.handleFilterClick.bind(this, item.bit)}
                 >
                   {item.name}
-                </li>;
+                </li>
+              );
             }
-            return <li key={index} className="divider" />;
+            return (<li key={index} className="divider" />);
           })}
         </ul>
       </nav>

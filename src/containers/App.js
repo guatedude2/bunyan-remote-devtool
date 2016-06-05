@@ -1,8 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
-import { toggleFilters, setFilterText, setFilterBit } from '../actions/app';
-import { clearHistory } from '../actions/client';
+import { toggleFilters } from '../actions/app';
+import { setFilterText, setFilterBit, clearHistory } from '../actions/client';
 
 import ToolBar from '../components/ToolBar';
 import FilterBar from '../components/FilterBar';
@@ -43,6 +43,7 @@ class App extends React.Component {
       <section className="app">
         <header className="header">
           <ToolBar
+            clientStatus={clientStatus}
             filtersVisible={filtersVisible}
             onFiltersClick={() => { dispatch(toggleFilters()); }}
             onClearHistoryClick={() => { dispatch(clearHistory()); }}
@@ -67,10 +68,10 @@ class App extends React.Component {
 
 const mapStateToProps = (state) => ({
   filtersVisible: state.app.filtersVisible,
-  filterBits: state.app.filterBits,
-  filterText: state.app.filterText,
+  filterBits: state.client.filterBits,
+  filterText: state.client.filterText,
   clientStatus: state.client.status,
-  history: state.client.history,
+  history: state.client.filteredHistory,
 });
 
 App = connect(mapStateToProps)(App);

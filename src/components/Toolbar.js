@@ -2,11 +2,22 @@
 import React from 'react';
 import classnames from 'classnames';
 
+import Textbox from './Textbox';
+
+import {
+  CONNECTING,
+  CONNECTED,
+  DISCONNECTED,
+  AUTHENTICATING,
+  ERROR
+} from '../actions/client';
+
 export default class ToolBar extends React.Component {
   static propTypes = {
+    clientStatus: React.PropTypes.string,
+    filtersVisible: React.PropTypes.bool,
     onFiltersClick: React.PropTypes.func,
-    onClearHistoryClick: React.PropTypes.func,
-    filtersVisible: React.PropTypes.bool
+    onClearHistoryClick: React.PropTypes.func
   };
 
   handleFiltersClick(e) {
@@ -17,8 +28,27 @@ export default class ToolBar extends React.Component {
     this.props.onClearHistoryClick(e);
   }
 
+  statusToText(status) {
+    switch (status) {
+      case CONNECTING:
+        return 'Connecting...';
+      case CONNECTED:
+        return 'Connected';
+      case DISCONNECTED:
+        return 'Server not found';
+      case AUTHENTICATING:
+        return 'Authenticating...';
+      case ERROR:
+        return 'Error';
+    }
+  }
+
   render() {
-    const {filtersVisible} = this.props;
+    const {filtersVisible, clientStatus} = this.props;
+
+    const statusText = this.statusToText(clientStatus);
+    // const isError = clientStatus === ERROR;
+    const isConnected = clientStatus === CONNECTED;
 
     return (
       <nav className="toolbar">
@@ -29,7 +59,7 @@ export default class ToolBar extends React.Component {
         <button className="icon-button icon-connect" title="Connect to server" disabled />
         <label className="toolbar-item">
           <span className="textbox-label">Port:</span>
-          <input className="textbox" type="text" placeholder="3232" />
+          <Textbox placeholder="3232" pattern="\d{0,5}" disabled={isConnected} />
         </label>
         <div className="divider" />
         <button
@@ -47,7 +77,7 @@ export default class ToolBar extends React.Component {
           <span className="checkbox-text">Preserve history</span>
         </label>
         <div className="status not-found">
-          Server not detected
+          {statusText}
         </div>
       </nav>
     );

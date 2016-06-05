@@ -2,11 +2,13 @@
 import io from 'socket.io-client';
 import {EventEmitter} from 'events';
 
-const CONNECTED = 'CONNECTED';
-const DISCONNECTED = 'DISCONNECTED';
-const AUTHENTICATING = 'AUTHENTICATING';
-const READY = 'READY';
-const ERROR = 'ERROR';
+import {
+  CONNECTING,
+  CONNECTED,
+  DISCONNECTED,
+  AUTHENTICATING,
+  ERROR
+} from '../actions/client';
 
 import isVersionValid from './version-checker';
 
@@ -19,7 +21,7 @@ class BunyanRemoteClient extends EventEmitter {
     this.io = io.connect(`http://${host}:${port}`);
 
     this.io.on('connect', () => {
-      this.emit('status-changed', CONNECTED);
+      this.emit('status-changed', CONNECTING);
     });
 
     this.io.on('info', ({hostname, version, auth}) => {
@@ -36,7 +38,7 @@ class BunyanRemoteClient extends EventEmitter {
 
     this.io.on('auth', ({status, history, error}) => {
       if (status === 'ok') {
-        this.emit('status-changed', READY, history);
+        this.emit('status-changed', CONNECTED, history);
       } else {
         this.emit('status-changed', ERROR, error);
       }
