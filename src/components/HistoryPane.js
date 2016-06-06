@@ -5,16 +5,30 @@ export default class HistoryPane extends React.Component {
   static propTypes = {
     children: React.PropTypes.any,
     history: React.PropTypes.array,
-    onTagClick: React.PropTypes.func
+    filteredCount: React.PropTypes.number,
+    onTagClick: React.PropTypes.func,
+    onClearFiltersClick: React.PropTypes.func,
   };
 
-  //TODO: scroll to latest
-  //TODO: hide/show old history when scrolling
+  static defaultProps = {
+    onClearFiltersClick: e => e
+  };
+
+  handleClearFilters(e) {
+    e.preventDefault();
+    this.props.onClearFiltersClick(e);
+  }
 
   render() {
-    const {history, onTagClick} = this.props;
+    const {filteredCount, history, onTagClick} = this.props;
     return (
       <article className="history-pane">
+        {filteredCount > 0 ?
+          <div className="clear-filters">
+            <span>{filteredCount} messages are hidden by filters.</span>
+            <a href="#" onClick={this.handleClearFilters.bind(this)}>Show all messages.</a>
+          </div>
+        : null}
         {history.map((record, index) => (
           <Record
             key={index}

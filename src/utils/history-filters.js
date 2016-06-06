@@ -4,9 +4,9 @@ const FILTERS = {
   10: { bit: 64 }, // TRACE
   20: { bit: 32 }, // DEBUG
   30: { bit: 16 }, // INFO
-  40: { bit: 8 }, // WARN
-  50: { bit: 4 }, // ERROR
-  60: { bit: 2 }, // FATAL
+  40: { bit: 8 },  // WARN
+  50: { bit: 4 },  // ERROR
+  60: { bit: 2 },  // FATAL
 };
 
 function escapeRegExp(str) {

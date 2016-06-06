@@ -6,5 +6,26 @@ article.history-pane {
   font-family: Menlo, monospace;
   overflow-y: auto;
   overflow-x: hidden;
-  padding: 5px 0;
+  padding: 2px 0;
+
+  .clear-filters {
+    padding: 4px 28px 3px;
+    color: rgb(128, 128, 128);
+    font-style: italic;
+    display: flex;
+
+    span {
+      flex: auto;
+    }
+
+    a {
+      flex: auto;
+      color: rgb(33%, 33%, 33%);
+
+      &:hover {
+        color: rgb(15%, 15%, 15%)
+      }
+    }
+
+  }
 }

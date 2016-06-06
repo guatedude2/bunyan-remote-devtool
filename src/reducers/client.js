@@ -26,19 +26,26 @@ export default handleActions({
       filteredHistory: historyFilters(state.history, state.filterBits, filterText)
     };
   },
-  CLIENT_ADD_LOG_EVENT: (state, {payload}) => {
-    const history = state.history.concat([payload.event]);
-    return {
+  CLIENT_ADD_LOG_EVENT: (state, {payload}) => (
+    {
       ...state,
-      history: history,
-      filteredHistory: historyFilters(history, state.filterBits, state.filterText)
-    };
-  },
+      history: state.history.concat([payload.event]),
+      filteredHistory: state.filteredHistory.concat(historyFilters([payload.event], state.filterBits, state.filterText))
+    }
+  ),
   CLIENT_CLEAR_HISTORY: (state) => (
     {
       ...state,
       history: [],
       filteredHistory: []
+    }
+  ),
+  CLIENT_CLEAR_FILTERS: (state) => (
+    {
+      ...state,
+      filterBits: 1,
+      filterText: '',
+      filteredHistory: state.history.slice()
     }
   )
 }, {

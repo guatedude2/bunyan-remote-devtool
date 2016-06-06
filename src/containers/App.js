@@ -2,7 +2,12 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 import { toggleFilters } from '../actions/app';
-import { setFilterText, setFilterBit, clearHistory } from '../actions/client';
+import {
+  setFilterText,
+  setFilterBit,
+  clearHistory,
+  clearFilters
+} from '../actions/client';
 
 import ToolBar from '../components/ToolBar';
 import FilterBar from '../components/FilterBar';
@@ -13,6 +18,7 @@ import HistoryPane from '../components/HistoryPane';
 class App extends React.Component {
   static propTypes = {
     dispatch: React.PropTypes.func,
+    filteredCount: React.PropTypes.number,
     filtersVisible: React.PropTypes.bool,
     filterBits: React.PropTypes.number,
     filterText: React.PropTypes.string,
@@ -29,15 +35,23 @@ class App extends React.Component {
     dispatch(setFilterText(tag));
   }
 
+  handleClearFilters() {
+    const { dispatch } = this.props;
+    dispatch(clearFilters());
+  }
+
   render() {
     const {
       dispatch,
+      filteredCount,
       filtersVisible,
       filterBits,
       filterText,
       clientStatus,
       history
     } = this.props;
+
+    console.log(filteredCount)
 
     return (
       <section className="app">
@@ -57,7 +71,12 @@ class App extends React.Component {
             }}
           />
         </header>
-        <HistoryPane history={history} onTagClick={this.handleTagClick.bind(this)}/>
+        <HistoryPane
+          history={history}
+          filteredCount={filteredCount}
+          onTagClick={this.handleTagClick.bind(this)}
+          onClearFiltersClick={this.handleClearFilters.bind(this)}
+        />
         <AuthPanel type="user" visible={false} />
         <ContextMenu className="options-menu" visible={false} />
       </section>
@@ -67,6 +86,7 @@ class App extends React.Component {
 
 
 const mapStateToProps = (state) => ({
+  filteredCount: (state.client.history.length - state.client.filteredHistory.length),
   filtersVisible: state.app.filtersVisible,
   filterBits: state.client.filterBits,
   filterText: state.client.filterText,
