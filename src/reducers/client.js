@@ -1,14 +1,23 @@
 import { handleActions } from 'redux-actions';
 import historyFilters from '../utils/history-filters';
-import { DISCONNECTED } from '../actions/client';
+import { CONNECTED, DISCONNECTED } from '../actions/client';
 
 export default handleActions({
-  CLIENT_SET_STATUS: (state, {payload}) => (
-    {
-      ...state,
-      status: payload.status
+  CLIENT_SET_STATUS: (state, {payload}) => {
+    let {history, filteredHistory, preserveHistory} = state;
+
+    if (!preserveHistory && payload.status === CONNECTED) {
+      history = [];
+      filteredHistory = [];
     }
-  ),
+
+    return {
+      ...state,
+      status: payload.status,
+      history: history,
+      filteredHistory: filteredHistory
+    };
+  },
 
   CLIENT_SET_FILTER_BIT: (state, {payload}) => {
     const filterBits = (payload.modifier ? state.filterBits ^ payload.filterBit : payload.filterBit);
@@ -47,11 +56,18 @@ export default handleActions({
       filterText: '',
       filteredHistory: state.history.slice()
     }
+  ),
+  CLIENT_SET_PRESERVE_HISTORY: (state, {payload}) => (
+    {
+      ...state,
+      preserveHistory: payload.preserveHistory
+    }
   )
 }, {
   status: DISCONNECTED,
   history: [],
   filteredHistory: [],
   filterBits: 1,
-  filterText: ''
+  filterText: '',
+  preserveHistory: false
 });

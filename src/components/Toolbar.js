@@ -16,17 +16,17 @@ export default class ToolBar extends React.Component {
   static propTypes = {
     clientStatus: React.PropTypes.string,
     filtersVisible: React.PropTypes.bool,
+    preserveHistory: React.PropTypes.bool,
     onFiltersClick: React.PropTypes.func,
-    onClearHistoryClick: React.PropTypes.func
+    onClearHistoryClick: React.PropTypes.func,
+    onPreserveHistoryClick: React.PropTypes.func
   };
 
-  handleFiltersClick(e) {
-    this.props.onFiltersClick(e);
-  }
-
-  handleClearHistoryClick(e) {
-    this.props.onClearHistoryClick(e);
-  }
+  static defaultProps = {
+    onFiltersClick: e => e,
+    onClearHistoryClick: e => e,
+    onPreserveHistoryClick: e => e
+  };
 
   statusToText(status) {
     switch (status) {
@@ -44,11 +44,11 @@ export default class ToolBar extends React.Component {
   }
 
   render() {
-    const {filtersVisible, clientStatus} = this.props;
+    const {filtersVisible, clientStatus, preserveHistory} = this.props;
 
     const statusText = this.statusToText(clientStatus);
     // const isError = clientStatus === ERROR;
-    const isConnected = clientStatus === CONNECTED;
+    // const isConnected = clientStatus === CONNECTED;
 
     return (
       <nav className="toolbar">
@@ -56,24 +56,28 @@ export default class ToolBar extends React.Component {
           <span>Bunyan Logger</span>
         </div>
         <div className="divider" />
-        <button className="icon-button icon-connect" title="Connect to server" disabled />
         <label className="toolbar-item">
           <span className="textbox-label">Port:</span>
-          <Textbox placeholder="3232" pattern="\d{0,5}" disabled={isConnected} />
+          <Textbox placeholder="3232" pattern="\d{0,5}" />
         </label>
         <div className="divider" />
         <button
           className="icon-button icon-clear"
           title="Clear history"
-          onClick={this.handleClearHistoryClick.bind(this)}
+          onClick={this.props.onClearHistoryClick.bind(this)}
         />
         <button
           className={classnames('icon-button', 'icon-filter', {active: filtersVisible})}
           title="Filter"
-          onClick={this.handleFiltersClick.bind(this)}
+          onClick={this.props.onFiltersClick.bind(this)}
         />
         <label className="toolbar-item checkbox" title="Do not remove history when connecting to bunyan server">
-          <input className="checkbox-button" type="checkbox" />
+          <input
+            type="checkbox"
+            className="checkbox-button"
+            checked={preserveHistory}
+            onClick={this.props.onPreserveHistoryClick.bind(this)}
+          />
           <span className="checkbox-text">Preserve history</span>
         </label>
         <div className="status not-found">

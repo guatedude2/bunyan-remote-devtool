@@ -6,7 +6,8 @@ import {
   setFilterText,
   setFilterBit,
   clearHistory,
-  clearFilters
+  clearFilters,
+  setPreserveHistory
 } from '../actions/client';
 
 import ToolBar from '../components/ToolBar';
@@ -22,23 +23,10 @@ class App extends React.Component {
     filtersVisible: React.PropTypes.bool,
     filterBits: React.PropTypes.number,
     filterText: React.PropTypes.string,
+    preserveHistory: React.PropTypes.bool,
     clientStatus: React.PropTypes.string,
     history: React.PropTypes.array,
   };
-
-  handleTagClick(tag) {
-    const { dispatch, filtersVisible } = this.props;
-
-    if (!filtersVisible) {
-      dispatch(toggleFilters());
-    }
-    dispatch(setFilterText(tag));
-  }
-
-  handleClearFilters() {
-    const { dispatch } = this.props;
-    dispatch(clearFilters());
-  }
 
   render() {
     const {
@@ -47,20 +35,20 @@ class App extends React.Component {
       filtersVisible,
       filterBits,
       filterText,
+      preserveHistory,
       clientStatus,
       history
     } = this.props;
-
-    console.log(filteredCount)
-
     return (
       <section className="app">
         <header className="header">
           <ToolBar
             clientStatus={clientStatus}
             filtersVisible={filtersVisible}
+            preserveHistory={preserveHistory}
             onFiltersClick={() => { dispatch(toggleFilters()); }}
             onClearHistoryClick={() => { dispatch(clearHistory()); }}
+            onPreserveHistoryClick={() => { dispatch(setPreserveHistory(!preserveHistory)); }}
           />
           <FilterBar
             visible={filtersVisible}
@@ -74,8 +62,11 @@ class App extends React.Component {
         <HistoryPane
           history={history}
           filteredCount={filteredCount}
-          onTagClick={this.handleTagClick.bind(this)}
-          onClearFiltersClick={this.handleClearFilters.bind(this)}
+          onTagClick={(tag) => {
+            if (!filtersVisible) dispatch(toggleFilters());
+            dispatch(setFilterText(tag));
+          }}
+          onClearFiltersClick={() => { dispatch(clearFilters()); }}
         />
         <AuthPanel type="user" visible={false} />
         <ContextMenu className="options-menu" visible={false} />
@@ -90,6 +81,7 @@ const mapStateToProps = (state) => ({
   filtersVisible: state.app.filtersVisible,
   filterBits: state.client.filterBits,
   filterText: state.client.filterText,
+  preserveHistory: state.client.preserveHistory,
   clientStatus: state.client.status,
   history: state.client.filteredHistory,
 });

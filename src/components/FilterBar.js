@@ -34,19 +34,6 @@ export default class FilterBar extends React.Component {
     });
   }
 
-  handleFilterTextChange(e) {
-    const {value} = e.target;
-    this.setState({filterText: value});
-    clearTimeout(this._debouncer);
-    this._debouncer = setTimeout(() => {
-      this.props.onFilterTextChange(this.state.filterText);
-    }, 100);
-  }
-
-  handleFilterClick(bit, e) {
-    this.props.onFilterBitChange(bit, e.metaKey);
-  }
-
   render() {
     const {filterText} = this.state;
     const {filterBits, visible} = this.props;
@@ -59,7 +46,14 @@ export default class FilterBar extends React.Component {
             placeholder="Filter"
             className="textbox"
             value={filterText}
-            onChange={this.handleFilterTextChange.bind(this)}
+            onChange={(e) => {
+              const {value} = e.target;
+              this.setState({filterText: value});
+              clearTimeout(this._debouncer);
+              this._debouncer = setTimeout(() => {
+                this.props.onFilterTextChange(this.state.filterText);
+              }, 100);
+            }}
           />
         </div>
         <ul className="filter-bitset">
@@ -69,7 +63,9 @@ export default class FilterBar extends React.Component {
                 <li key={index}
                   className={classnames('item', { selected: (item.bit & filterBits) === item.bit  })}
                   title="&#8984; Click to select multiple types"
-                  onClick={this.handleFilterClick.bind(this, item.bit)}
+                  onClick={(e) => {
+                    this.props.onFilterBitChange(item.bit, e.metaKey);
+                  }}
                 >
                   {item.name}
                 </li>

@@ -23,17 +23,6 @@ export default class Record extends React.Component {
     };
   }
 
-  handleExpandClick() {
-    this.setState({
-      expanded: !this.state.expanded
-    });
-  }
-
-  handleTagClick(tag, e) {
-    e.preventDefault();
-    this.props.onTagClick(tag, e);
-  }
-
   render() {
     const {expanded} = this.state;
     const {format, record} = this.props;
@@ -52,7 +41,10 @@ export default class Record extends React.Component {
         <a
           key={key}
           href="#"
-          onClick={this.handleTagClick.bind(this, `${key}: ${value}`)}
+          onClick={(e) => {
+            e.preventDefault();
+            this.props.onTagClick(`${key}: ${value}`, e);
+          }}
         >
           {key}:&nbsp;{value}
         </a>
@@ -63,7 +55,11 @@ export default class Record extends React.Component {
       <div className="details">
         <div
           className="text"
-          onClick={this.handleExpandClick.bind(this)}
+          onClick={() => {
+            this.setState({
+              expanded: !this.state.expanded
+            });
+          }}
           dangerouslySetInnerHTML={{__html: log }}
         />
         <div className="tags">

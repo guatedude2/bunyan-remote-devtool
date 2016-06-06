@@ -25,3 +25,8 @@ export const addLogEvent = createAction('CLIENT_ADD_LOG_EVENT', (event) => (
 export const clearHistory = createAction('CLIENT_CLEAR_HISTORY');
 
 export const clearFilters = createAction('CLIENT_CLEAR_FILTERS');
+
+export const setPreserveHistory = createAction('CLIENT_SET_PRESERVE_HISTORY', (preserveHistory) => (
+  {preserveHistory}
+));
+

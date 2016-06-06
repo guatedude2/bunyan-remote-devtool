@@ -27,19 +27,6 @@ export default class Textbox extends React.Component {
     });
   }
 
-  handleChange(e) {
-    const {patternRegExp} = this.state;
-
-    if (patternRegExp.test(e.target.value)) {
-
-      this.setState({
-        value: this.props.value || e.target.value
-      });
-
-      this.props.onChange(e);
-    }
-  }
-
   render() {
     const {value} = this.state;
     const {className} = this.props;
@@ -50,7 +37,17 @@ export default class Textbox extends React.Component {
         type="text"
         value={value}
         className={`textbox ${className}`}
-        onChange={this.handleChange.bind(this)}
+        onChange={(e) => {
+          const {patternRegExp} = this.state;
+
+          if (patternRegExp.test(e.target.value)) {
+            this.setState({
+              value: this.props.value || e.target.value
+            });
+
+            this.props.onChange(e);
+          }
+        }}
       />
     );
   }

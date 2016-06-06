@@ -14,11 +14,6 @@ export default class HistoryPane extends React.Component {
     onClearFiltersClick: e => e
   };
 
-  handleClearFilters(e) {
-    e.preventDefault();
-    this.props.onClearFiltersClick(e);
-  }
-
   render() {
     const {filteredCount, history, onTagClick} = this.props;
     return (
@@ -26,7 +21,14 @@ export default class HistoryPane extends React.Component {
         {filteredCount > 0 ?
           <div className="clear-filters">
             <span>{filteredCount} messages are hidden by filters.</span>
-            <a href="#" onClick={this.handleClearFilters.bind(this)}>Show all messages.</a>
+            <a
+              href="#"
+              onClick={(e) => {
+                e.preventDefault();
+                this.props.onClearFiltersClick(e);
+              }}>
+              Show all messages.
+            </a>
           </div>
         : null}
         {history.map((record, index) => (
