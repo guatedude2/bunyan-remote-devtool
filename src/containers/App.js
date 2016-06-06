@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 
 import { toggleFilters } from '../actions/app';
 import {
+  changeServerPort,
   setFilterText,
   setFilterBit,
   clearHistory,
@@ -19,36 +20,41 @@ import HistoryPane from '../components/HistoryPane';
 class App extends React.Component {
   static propTypes = {
     dispatch: React.PropTypes.func,
+    serverPort: React.PropTypes.string,
+    clientStatus: React.PropTypes.string,
     filteredCount: React.PropTypes.number,
     filtersVisible: React.PropTypes.bool,
     filterBits: React.PropTypes.number,
     filterText: React.PropTypes.string,
     preserveHistory: React.PropTypes.bool,
-    clientStatus: React.PropTypes.string,
     history: React.PropTypes.array,
   };
 
   render() {
     const {
       dispatch,
+      serverPort,
+      clientStatus,
       filteredCount,
       filtersVisible,
       filterBits,
       filterText,
       preserveHistory,
-      clientStatus,
       history
     } = this.props;
     return (
       <section className="app">
         <header className="header">
           <ToolBar
+            serverPort={serverPort}
             clientStatus={clientStatus}
             filtersVisible={filtersVisible}
             preserveHistory={preserveHistory}
+            serverPort={serverPort}
+            onPortChange={(port) => { dispatch(changeServerPort(port)); }}
             onFiltersClick={() => { dispatch(toggleFilters()); }}
             onClearHistoryClick={() => { dispatch(clearHistory()); }}
-            onPreserveHistoryClick={() => { dispatch(setPreserveHistory(!preserveHistory)); }}
+            onPreserveHistoryClick={(enabled) => { dispatch(setPreserveHistory(enabled)); }}
           />
           <FilterBar
             visible={filtersVisible}
@@ -77,6 +83,7 @@ class App extends React.Component {
 
 
 const mapStateToProps = (state) => ({
+  serverPort: state.client.serverPort,
   filteredCount: (state.client.history.length - state.client.filteredHistory.length),
   filtersVisible: state.app.filtersVisible,
   filterBits: state.client.filterBits,

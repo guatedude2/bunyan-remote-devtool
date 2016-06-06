@@ -6,6 +6,10 @@ export const DISCONNECTED = 'DISCONNECTED';
 export const AUTHENTICATING = 'AUTHENTICATING';
 export const ERROR = 'ERROR';
 
+export const changeServerPort = createAction('CLIENT_SET_SERVER_PORT', (serverPort) => (
+  {serverPort}
+));
+
 export const setClientStatus = createAction('CLIENT_SET_STATUS', (status) => (
   {status}
 ));

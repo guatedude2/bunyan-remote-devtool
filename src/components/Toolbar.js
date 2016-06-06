@@ -14,15 +14,18 @@ import {
 
 export default class ToolBar extends React.Component {
   static propTypes = {
+    serverPort: React.PropTypes.string,
     clientStatus: React.PropTypes.string,
     filtersVisible: React.PropTypes.bool,
     preserveHistory: React.PropTypes.bool,
+    onPortChange: React.PropTypes.func,
     onFiltersClick: React.PropTypes.func,
     onClearHistoryClick: React.PropTypes.func,
     onPreserveHistoryClick: React.PropTypes.func
   };
 
   static defaultProps = {
+    onPortChange: e => e,
     onFiltersClick: e => e,
     onClearHistoryClick: e => e,
     onPreserveHistoryClick: e => e
@@ -44,7 +47,12 @@ export default class ToolBar extends React.Component {
   }
 
   render() {
-    const {filtersVisible, clientStatus, preserveHistory} = this.props;
+    const {
+      serverPort,
+      filtersVisible,
+      clientStatus,
+      preserveHistory
+    } = this.props;
 
     const statusText = this.statusToText(clientStatus);
     // const isError = clientStatus === ERROR;
@@ -58,7 +66,11 @@ export default class ToolBar extends React.Component {
         <div className="divider" />
         <label className="toolbar-item">
           <span className="textbox-label">Port:</span>
-          <Textbox placeholder="3232" pattern="\d{0,5}" />
+          <Textbox
+            placeholder="3232"
+            pattern="([1-9][0-9]{0,5})?"
+            value={serverPort}
+            onChange={(e) => { this.props.onPortChange(e.target.value); }} />
         </label>
         <div className="divider" />
         <button
@@ -76,7 +88,7 @@ export default class ToolBar extends React.Component {
             type="checkbox"
             className="checkbox-button"
             checked={preserveHistory}
-            onClick={this.props.onPreserveHistoryClick.bind(this)}
+            onClick={() => { this.props.onPreserveHistoryClick(!preserveHistory); }}
           />
           <span className="checkbox-text">Preserve history</span>
         </label>

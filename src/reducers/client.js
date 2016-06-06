@@ -3,6 +3,13 @@ import historyFilters from '../utils/history-filters';
 import { CONNECTED, DISCONNECTED } from '../actions/client';
 
 export default handleActions({
+  CLIENT_SET_SERVER_PORT: (state, {payload}) => (
+    {
+      ...state,
+      serverPort: payload.serverPort
+    }
+  ),
+
   CLIENT_SET_STATUS: (state, {payload}) => {
     let {history, filteredHistory, preserveHistory} = state;
 
@@ -64,6 +71,7 @@ export default handleActions({
     }
   )
 }, {
+  serverPort: '',
   status: DISCONNECTED,
   history: [],
   filteredHistory: [],

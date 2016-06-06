@@ -18,7 +18,12 @@ const AUTH_USER = 2;
 
 class BunyanRemoteClient extends EventEmitter {
   connect(host, port) {
+    if (this.io && this.io.connected) {
+      this.io.disconnect(true);
+    }
     this.io = io.connect(`http://${host}:${port}`);
+    this.serverHost = host;
+    this.serverPort = port;
 
     this.io.on('connect', () => {
       this.emit('status-changed', CONNECTING);
@@ -65,6 +70,15 @@ class BunyanRemoteClient extends EventEmitter {
       this.io.emit('auth', userKey);
     }
     return true;
+  }
+
+  setPort(port) {
+    clearTimeout(this._portDebouncer);
+    this._portDebouncer = setTimeout(() => {
+      if (port !== this.serverPort) {
+        this.connect(this.serverHost, port);
+      }
+    }, 800);
   }
 
   onStatusChanged(cb) { this.on('status-changed', cb); }

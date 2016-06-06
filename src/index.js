@@ -16,6 +16,12 @@ let store = createStore(
     window.devToolsExtension ? window.devToolsExtension() : f => f
   )
 );
+
+store.subscribe(() => {
+  const {serverPort} = store.getState().client;
+  client.setPort(serverPort || 3232);
+});
+
 client.onStatusChanged((status, data) => {
   store.dispatch(setClientStatus(status, data));
 });

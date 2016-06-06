@@ -4,7 +4,10 @@ export default class Textbox extends React.Component {
   static propTypes = {
     className: React.PropTypes.string,
     pattern: React.PropTypes.string,
-    value: React.PropTypes.string,
+    value: React.PropTypes.oneOfType([
+      React.PropTypes.string,
+      React.PropTypes.number,
+    ]),
     onChange: React.PropTypes.func
   };
 
