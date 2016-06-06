@@ -21,22 +21,8 @@ export default class FilterBar extends React.Component {
     onFilterTextChange:  React.PropTypes.func.isRequired
   };
 
-  constructor() {
-    super();
-    this.state = {
-      filterText: ''
-    };
-  }
-
-  componentWillReceiveProps(props) {
-    this.setState({
-      filterText: props.filterText
-    });
-  }
-
   render() {
-    const {filterText} = this.state;
-    const {filterBits, visible} = this.props;
+    const {filterText, filterBits, visible} = this.props;
 
     return (
       <nav className={classnames('filterbar', { shown: visible })}>
@@ -47,12 +33,7 @@ export default class FilterBar extends React.Component {
             className="textbox"
             value={filterText}
             onChange={(e) => {
-              const {value} = e.target;
-              this.setState({filterText: value});
-              clearTimeout(this._debouncer);
-              this._debouncer = setTimeout(() => {
-                this.props.onFilterTextChange(this.state.filterText);
-              }, 100);
+              this.props.onFilterTextChange(e.target.value);
             }}
           />
         </div>
