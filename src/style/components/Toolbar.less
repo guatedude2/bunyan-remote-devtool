@@ -39,7 +39,18 @@ nav.toolbar {
     justify-content: flex-end;
     align-items: center;
     padding-right: 4px;
-    color: #333;
+    color: rgb(33%, 33%, 33%);
+
+    &.authenticating {
+      span {
+        cursor: pointer;
+        color: rgb(33%, 33%, 33%);
+
+        &:hover {
+          color: rgb(15%, 15%, 15%);
+        }
+      }
+    }
 
     &.not-found {
       opacity: 0.5;

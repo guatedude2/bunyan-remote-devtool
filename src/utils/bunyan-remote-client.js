@@ -6,6 +6,7 @@ import {
   CONNECTING,
   CONNECTED,
   DISCONNECTED,
+  WAITING_FOR_AUTH,
   AUTHENTICATING,
   ERROR
 } from '../actions/client';
@@ -26,6 +27,8 @@ class BunyanRemoteClient extends EventEmitter {
     this.serverPort = port;
 
     this.io.on('connect', () => {
+      this.detected = true;
+      this.connected = false;
       this.emit('status-changed', CONNECTING);
     });
 
@@ -37,16 +40,21 @@ class BunyanRemoteClient extends EventEmitter {
       } else if (auth === AUTH_NONE) {
         this.io.emit('auth');
       } else if (auth === AUTH_USER || auth === AUTH_KEY){
-        this.emit('status-changed', AUTHENTICATING, auth);
+        this.emit('status-changed', WAITING_FOR_AUTH);
+        this.emit('request-auth', auth);
       }
     });
 
     this.io.on('auth', ({status, history, error}) => {
       if (status === 'ok') {
+        this.connected = true;
         this.emit('status-changed', CONNECTED, history);
         this.emit('log-event', `Connected to ${this.io.serverName}`);
       } else {
-        this.emit('status-changed', ERROR, error);
+        this.detected = false;
+        this.emit('status-changed', ERROR);
+        this.emit('auth-error', error);
+        this.connect(this.serverHost, this.serverPort);
       }
     });
 
@@ -55,7 +63,10 @@ class BunyanRemoteClient extends EventEmitter {
     });
 
     this.io.on('disconnect', () => {
-      this.emit('log-event', 'Disconnected from server');
+      if (this.connected) {
+        this.emit('log-event', 'Disconnected from server');
+        this.connected = false;
+      }
       this.emit('status-changed', DISCONNECTED);
     });
   }
@@ -71,6 +82,7 @@ class BunyanRemoteClient extends EventEmitter {
     } else {
       this.io.emit('auth', userKey);
     }
+    this.emit('status-changed', AUTHENTICATING);
     return true;
   }
 
@@ -85,6 +97,8 @@ class BunyanRemoteClient extends EventEmitter {
 
   onStatusChanged(cb) { this.on('status-changed', cb); }
   onLogEvent(cb) { this.on('log-event', cb); }
+  onRequestAuth(cb) { this.on('request-auth', cb); }
+  onAuthError(cb) { this.on('auth-error', cb); }
 };
 
 export default new BunyanRemoteClient();

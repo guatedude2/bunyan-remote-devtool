@@ -8,6 +8,7 @@ import {
   CONNECTING,
   CONNECTED,
   DISCONNECTED,
+  WAITING_FOR_AUTH,
   AUTHENTICATING,
   ERROR
 } from '../actions/client';
@@ -19,6 +20,7 @@ export default class ToolBar extends React.Component {
     filtersVisible: React.PropTypes.bool,
     preserveHistory: React.PropTypes.bool,
     onPortChange: React.PropTypes.func,
+    onStatusClick: React.PropTypes.func,
     onFiltersClick: React.PropTypes.func,
     onClearHistoryClick: React.PropTypes.func,
     onPreserveHistoryClick: React.PropTypes.func
@@ -26,24 +28,29 @@ export default class ToolBar extends React.Component {
 
   static defaultProps = {
     onPortChange: e => e,
+    onStatusClick: e => e,
     onFiltersClick: e => e,
     onClearHistoryClick: e => e,
     onPreserveHistoryClick: e => e
   };
 
-  statusToText(status) {
+  statusInfo(status) {
     switch (status) {
       case CONNECTING:
-        return 'Connecting...';
+        return { text: 'Connecting...', class: 'connecting' };
       case CONNECTED:
-        return 'Connected';
+        return { text: 'Connected', class: 'connected' };
       case DISCONNECTED:
-        return 'Server not found';
+        return { text: 'Server not found', class: 'not-found' };
+      case WAITING_FOR_AUTH:
+        return { text: 'Waiting for Authenticating...', class: 'authenticating' };
       case AUTHENTICATING:
-        return 'Authenticating...';
+        return { text: 'Authenticating...', class: 'connecting' };
       case ERROR:
-        return 'Error';
+        return { text: 'Error', class: 'error' };
     }
+
+    return { text: 'Unknown Status', class: 'error' };
   }
 
   render() {
@@ -54,9 +61,7 @@ export default class ToolBar extends React.Component {
       preserveHistory
     } = this.props;
 
-    const statusText = this.statusToText(clientStatus);
-    // const isError = clientStatus === ERROR;
-    // const isConnected = clientStatus === CONNECTED;
+    const statusInfo = this.statusInfo(clientStatus);
 
     return (
       <nav className="toolbar">
@@ -92,8 +97,15 @@ export default class ToolBar extends React.Component {
           />
           <span className="checkbox-text">Preserve history</span>
         </label>
-        <div className="status not-found">
-          {statusText}
+        <div
+          className={classnames('status' , statusInfo.class)}
+          onClick={() => {
+            if (clientStatus === WAITING_FOR_AUTH) {
+              this.props.onStatusClick();
+            }
+          }}
+        >
+          <span>{statusInfo.text}</span>
         </div>
       </nav>
     );

@@ -8,7 +8,7 @@ import ObjectInspector from './ObjectInspector';
 export default class Record extends React.Component {
   static propTypes = {
     format: React.PropTypes.string,
-    record: React.PropTypes.object,
+    record: React.PropTypes.oneOfType([React.PropTypes.object, React.PropTypes.string]),
     onTagClick: React.PropTypes.func
   };
 

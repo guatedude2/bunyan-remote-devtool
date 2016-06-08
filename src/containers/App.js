@@ -8,7 +8,10 @@ import {
   setFilterBit,
   clearHistory,
   clearFilters,
-  setPreserveHistory
+  setPreserveHistory,
+  sendAuth,
+  showAuthPanel,
+  hideAuthPanel
 } from '../actions/client';
 
 import ToolBar from '../components/ToolBar';
@@ -21,6 +24,9 @@ class App extends React.Component {
   static propTypes = {
     dispatch: React.PropTypes.func,
     serverPort: React.PropTypes.string,
+    requestAuth: React.PropTypes.number,
+    authPanelVisible: React.PropTypes.bool,
+    authError: React.PropTypes.string,
     clientStatus: React.PropTypes.string,
     filteredCount: React.PropTypes.number,
     filtersVisible: React.PropTypes.bool,
@@ -35,6 +41,9 @@ class App extends React.Component {
       dispatch,
       serverPort,
       clientStatus,
+      authPanelVisible,
+      authError,
+      requestAuth,
       filteredCount,
       filtersVisible,
       filterBits,
@@ -42,6 +51,7 @@ class App extends React.Component {
       preserveHistory,
       history
     } = this.props;
+
     return (
       <section className="app">
         <header className="header">
@@ -55,6 +65,7 @@ class App extends React.Component {
             onFiltersClick={() => { dispatch(toggleFilters()); }}
             onClearHistoryClick={() => { dispatch(clearHistory()); }}
             onPreserveHistoryClick={(enabled) => { dispatch(setPreserveHistory(enabled)); }}
+            onStatusClick={() => { dispatch(showAuthPanel()); }}
           />
           <FilterBar
             visible={filtersVisible}
@@ -74,7 +85,13 @@ class App extends React.Component {
           }}
           onClearFiltersClick={() => { dispatch(clearFilters()); }}
         />
-        <AuthPanel type="user" visible={false} />
+        <AuthPanel
+          type={requestAuth}
+          error={authError}
+          visible={authPanelVisible}
+          onValidate={(userKey, password) => { dispatch(sendAuth(userKey, password)); }}
+          onCancel={() => { dispatch(hideAuthPanel()); }}
+        />
         <ContextMenu className="options-menu" visible={false} />
       </section>
     );
@@ -89,6 +106,9 @@ const mapStateToProps = (state) => ({
   filterBits: state.client.filterBits,
   filterText: state.client.filterText,
   preserveHistory: state.client.preserveHistory,
+  requestAuth: state.client.requestAuth,
+  authPanelVisible: state.client.authPanelVisible,
+  authError: state.client.authError,
   clientStatus: state.client.status,
   history: state.client.filteredHistory,
 });
