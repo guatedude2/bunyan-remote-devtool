@@ -44,6 +44,7 @@ class BunyanRemoteClient extends EventEmitter {
     this.io.on('auth', ({status, history, error}) => {
       if (status === 'ok') {
         this.emit('status-changed', CONNECTED, history);
+        this.emit('log-event', `Connected to ${this.io.serverName}`);
       } else {
         this.emit('status-changed', ERROR, error);
       }
@@ -54,6 +55,7 @@ class BunyanRemoteClient extends EventEmitter {
     });
 
     this.io.on('disconnect', () => {
+      this.emit('log-event', 'Disconnected from server');
       this.emit('status-changed', DISCONNECTED);
     });
   }

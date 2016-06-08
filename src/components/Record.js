@@ -26,7 +26,7 @@ export default class Record extends React.Component {
   render() {
     const {expanded} = this.state;
     const {format, record} = this.props;
-    const {log, object, error, tags} = bunyanFormatter(format, record);
+    const {log, className, object, error, tags} = bunyanFormatter(format, record);
     let inspectObject = null;
     let tagArray = null;
 
@@ -52,9 +52,9 @@ export default class Record extends React.Component {
     }
 
     return <div className={classnames('record', {error, expanded})}>
-      <div className="details">
+      <div className={classnames('row', className)}>
         <div
-          className="text"
+          className="details"
           onClick={() => {
             this.setState({
               expanded: !this.state.expanded

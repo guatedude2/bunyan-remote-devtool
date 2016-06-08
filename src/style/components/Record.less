@@ -1,3 +1,9 @@
+.level-mixin(@color) {
+  .details {
+    .level { color: @color; }
+  }
+}
+
 div.record {
   padding: 4px 28px 3px;
   border-bottom: 1px solid #EEE;
@@ -46,11 +52,26 @@ div.record {
     }
   }
 
-  .details {
+  .row {
     display: flex;
 
-    .text {
+    &.trace { .level-mixin(#999999); }
+    &.debug { .level-mixin(#F4BF00); }
+    &.info { .level-mixin(#1ABEE3); }
+    &.warn { .level-mixin(#E31ACB); }
+    &.error { .level-mixin(#FF0000); }
+    &.fatal { .level-mixin(#FFFFFF); }
+
+    .details {
       flex: 1 1 auto;
+
+      .client {
+        color: rgb(60%, 60%, 60%);
+      }
+
+      .msg {
+        color: rgb(60%, 60%, 60%);
+      }
     }
 
     .tags {
