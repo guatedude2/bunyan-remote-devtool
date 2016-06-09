@@ -49,7 +49,13 @@ export default class AuthPanel extends React.Component {
     };
 
     return (
-      <Panel {...this.props} className="auth-panel">
+      <Panel
+        {...this.props}
+        className="auth-panel"
+        onDismiss={() => {
+          this.props.onCancel();
+        }}
+      >
         { type === AUTH_KEY ?
           <div className="group">
             <div className="instrutions">Please enter the server key:</div>
@@ -103,9 +109,7 @@ export default class AuthPanel extends React.Component {
           </button>
           <button
             className="cancel"
-            onClick={() => {
-              this.props.onCancel();
-            }}
+            onClick={() => { this.props.onCancel(); }}
           >
             Cancel
           </button>

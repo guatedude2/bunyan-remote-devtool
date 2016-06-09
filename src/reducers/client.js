@@ -3,6 +3,12 @@ import historyFilters from '../utils/history-filters';
 import { CONNECTED, DISCONNECTED, AUTH_NONE } from '../actions/client';
 
 export default handleActions({
+  CLIENT_ENABLE: (state, {payload}) => (
+    {
+      ...state,
+      clientEnabled: payload.enabled
+    }
+  ),
   CLIENT_SET_SERVER_PORT: (state, {payload}) => (
     {
       ...state,
@@ -24,7 +30,8 @@ export default handleActions({
       history: history,
       filteredHistory: filteredHistory,
       sendCredentials: false,
-      authPanelVisible: false
+      authPanelVisible: false,
+      disconnect: false
     };
   },
 
@@ -113,6 +120,7 @@ export default handleActions({
   )
 }, {
   serverPort: '',
+  clientEnabled: true,
   credentials: null,
   status: DISCONNECTED,
   history: [],

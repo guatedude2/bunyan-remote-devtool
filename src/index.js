@@ -18,11 +18,21 @@ let store = createStore(
 );
 
 store.subscribe(() => {
-  const {serverPort, sendCredentials, credentials} = store.getState().client;
+  const {clientEnabled, serverPort, sendCredentials, credentials} = store.getState().client;
   client.setPort(serverPort || 3232);
 
   if (sendCredentials) {
     client.authenticate(credentials.userKey, credentials.password);
+  }
+
+  console.log(client.enabled, clientEnabled)
+
+  if (!client.enabled && clientEnabled) {
+    client.enable();
+  }
+
+  if (client.enabled && !clientEnabled) {
+    client.disable();
   }
 });
 

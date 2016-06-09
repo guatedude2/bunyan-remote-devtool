@@ -42,7 +42,7 @@ nav.toolbar {
     color: rgb(33%, 33%, 33%);
 
     &.authenticating {
-      span {
+      .status-text {
         cursor: pointer;
         color: rgb(33%, 33%, 33%);
 
@@ -57,6 +57,10 @@ nav.toolbar {
     }
     &.error {
       color: #F00;
+    }
+
+    .status-text {
+      padding: 0 5px;
     }
   }
 }

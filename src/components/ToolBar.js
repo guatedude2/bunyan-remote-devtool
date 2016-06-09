@@ -13,14 +13,18 @@ import {
   ERROR
 } from '../actions/client';
 
+const DISABLED = 'DISABLED';
+
 export default class ToolBar extends React.Component {
   static propTypes = {
+    clientEnabled: React.PropTypes.bool,
     serverPort: React.PropTypes.string,
     clientStatus: React.PropTypes.string,
     filtersVisible: React.PropTypes.bool,
     preserveHistory: React.PropTypes.bool,
     onPortChange: React.PropTypes.func,
     onStatusClick: React.PropTypes.func,
+    onEnableDisableClick: React.PropTypes.func,
     onFiltersClick: React.PropTypes.func,
     onClearHistoryClick: React.PropTypes.func,
     onPreserveHistoryClick: React.PropTypes.func
@@ -30,6 +34,7 @@ export default class ToolBar extends React.Component {
     onPortChange: e => e,
     onStatusClick: e => e,
     onFiltersClick: e => e,
+    onEnableDisableClick: e => e,
     onClearHistoryClick: e => e,
     onPreserveHistoryClick: e => e
   };
@@ -48,6 +53,8 @@ export default class ToolBar extends React.Component {
         return { text: 'Authenticating...', class: 'connecting' };
       case ERROR:
         return { text: 'Error', class: 'error' };
+      case DISABLED:
+        return { text: 'Not recording', class: 'not-found' };
     }
 
     return { text: 'Unknown Status', class: 'error' };
@@ -58,17 +65,35 @@ export default class ToolBar extends React.Component {
       serverPort,
       filtersVisible,
       clientStatus,
+      clientEnabled,
       preserveHistory
     } = this.props;
 
-    const statusInfo = this.statusInfo(clientStatus);
+    const statusInfo = this.statusInfo(clientEnabled ? clientStatus : DISABLED);
 
     return (
       <nav className="toolbar">
         <div className="logo" title={`Version: ${APP_VERSION}`}>
           <span>Bunyan Logger</span>
         </div>
+
         <div className="divider" />
+
+        <button
+          className={classnames('icon-button', 'icon-record', {active: clientEnabled})}
+          title={clientEnabled ? 'Stop recording ⌘ E' : 'Start recording bunyan logs ⌘ E'}
+          onClick={()=> {
+            this.props.onEnableDisableClick();
+          }}
+        />
+        <button
+          className="icon-button icon-clear"
+          title={'Clear history ⌘ K'}
+          onClick={this.props.onClearHistoryClick.bind(this)}
+        />
+
+        <div className="divider" />
+
         <label className="toolbar-item">
           <span className="textbox-label">Port:</span>
           <Textbox
@@ -77,12 +102,9 @@ export default class ToolBar extends React.Component {
             value={serverPort}
             onChange={(e) => { this.props.onPortChange(e.target.value); }} />
         </label>
+
         <div className="divider" />
-        <button
-          className="icon-button icon-clear"
-          title="Clear history"
-          onClick={this.props.onClearHistoryClick.bind(this)}
-        />
+
         <button
           className={classnames('icon-button', 'icon-filter', {active: filtersVisible})}
           title="Filter"
@@ -97,6 +119,7 @@ export default class ToolBar extends React.Component {
           />
           <span className="checkbox-text">Preserve history</span>
         </label>
+
         <div
           className={classnames('status' , statusInfo.class)}
           onClick={() => {
@@ -105,7 +128,7 @@ export default class ToolBar extends React.Component {
             }
           }}
         >
-          <span>{statusInfo.text}</span>
+          <span className="status-text">{statusInfo.text}</span>
         </div>
       </nav>
     );

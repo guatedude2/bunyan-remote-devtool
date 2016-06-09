@@ -11,6 +11,10 @@ export const AUTH_NONE = 0;
 export const AUTH_KEY = 1;
 export const AUTH_USER = 2;
 
+export const clientEnable = createAction('CLIENT_ENABLE', (enabled) => (
+  {enabled}
+));
+
 export const changeServerPort = createAction('CLIENT_SET_SERVER_PORT', (serverPort) => (
   {serverPort}
 ));

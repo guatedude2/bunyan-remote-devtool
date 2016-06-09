@@ -43,7 +43,7 @@ export default class FilterBar extends React.Component {
               return (
                 <li key={index}
                   className={classnames('item', { selected: (item.bit & filterBits) === item.bit  })}
-                  title="&#8984; Click to select multiple types"
+                  title={'⌘ Click to select multiple types'}
                   onClick={(e) => {
                     this.props.onFilterBitChange(item.bit, e.metaKey);
                   }}

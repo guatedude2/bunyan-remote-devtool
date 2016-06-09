@@ -11,7 +11,8 @@ import {
   setPreserveHistory,
   sendAuth,
   showAuthPanel,
-  hideAuthPanel
+  hideAuthPanel,
+  clientEnable
 } from '../actions/client';
 
 import ToolBar from '../components/ToolBar';
@@ -23,6 +24,7 @@ import HistoryPane from '../components/HistoryPane';
 class App extends React.Component {
   static propTypes = {
     dispatch: React.PropTypes.func,
+    clientEnabled: React.PropTypes.bool,
     serverPort: React.PropTypes.string,
     requestAuth: React.PropTypes.number,
     authPanelVisible: React.PropTypes.bool,
@@ -36,9 +38,29 @@ class App extends React.Component {
     history: React.PropTypes.array,
   };
 
+  componentWillMount() {
+    document.addEventListener('keydown', this.handleGlobalKeyPress.bind(this), false);
+  }
+
+
+  componentWillUnmount() {
+    document.removeEventListener('keydown', this.handleGlobalKeyPress.bind(this), false);
+  }
+
+  handleGlobalKeyPress(e) {
+    const {dispatch, clientEnabled} = this.props;
+
+    if (e.metaKey && e.key === 'e') {
+      dispatch(clientEnable(!clientEnabled));
+    } else if (e.metaKey && e.key === 'k') {
+      dispatch(clearHistory());
+    }
+  }
+
   render() {
     const {
       dispatch,
+      clientEnabled,
       serverPort,
       clientStatus,
       authPanelVisible,
@@ -56,6 +78,7 @@ class App extends React.Component {
       <section className="app">
         <header className="header">
           <ToolBar
+            clientEnabled={clientEnabled}
             serverPort={serverPort}
             clientStatus={clientStatus}
             filtersVisible={filtersVisible}
@@ -64,6 +87,7 @@ class App extends React.Component {
             onPortChange={(port) => { dispatch(changeServerPort(port)); }}
             onFiltersClick={() => { dispatch(toggleFilters()); }}
             onClearHistoryClick={() => { dispatch(clearHistory()); }}
+            onEnableDisableClick={() => { dispatch(clientEnable(!clientEnabled)); }}
             onPreserveHistoryClick={(enabled) => { dispatch(setPreserveHistory(enabled)); }}
             onStatusClick={() => { dispatch(showAuthPanel()); }}
           />
@@ -100,6 +124,7 @@ class App extends React.Component {
 
 
 const mapStateToProps = (state) => ({
+  clientEnabled: state.client.clientEnabled,
   serverPort: state.client.serverPort,
   filteredCount: (state.client.history.length - state.client.filteredHistory.length),
   filtersVisible: state.app.filtersVisible,

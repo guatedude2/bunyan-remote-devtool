@@ -25,6 +25,7 @@ class BunyanRemoteClient extends EventEmitter {
     this.io = io.connect(`http://${host}:${port}`);
     this.serverHost = host;
     this.serverPort = port;
+    this.enabled = true;
 
     this.io.on('connect', () => {
       this.detected = true;
@@ -69,6 +70,16 @@ class BunyanRemoteClient extends EventEmitter {
       }
       this.emit('status-changed', DISCONNECTED);
     });
+  }
+
+  enable() {
+    this.enabled = true;
+    this.connect(this.serverHost, this.serverPort);
+  }
+
+  disable() {
+    this.enabled = false;
+    this.io.disconnect();
   }
 
   authenticate(userKey, password) {

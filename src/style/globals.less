@@ -95,14 +95,16 @@ button {
     &.icon-clear {
       -webkit-mask-position: 0 0;
     }
-    &.icon-connect {
+    &.icon-filter {
       -webkit-mask-position: -24px 0;
     }
-    &.icon-disconnect {
+    &.icon-record {
       -webkit-mask-position: -48px 0;
-    }
-    &.icon-filter {
-      -webkit-mask-position: -72px 0;
+
+      &.active {
+        -webkit-mask-position: -72px 0;
+        background-color: rgb(216, 0, 0) !important;
+      }
     }
   }
 }
